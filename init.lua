@@ -1,4 +1,5 @@
-local CursorMover  = require('CursorMover')
+local CursorMoverMin  = require('CursorMoverMin')
+--local CursorMover  = require('CursorMover')
 --local WindowManager  = require('WindowManager')
 --local WindowSwitcher  = require('WindowSwitcher')
 

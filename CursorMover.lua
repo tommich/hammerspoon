@@ -13,64 +13,6 @@ local big_magnitude = 2/6
 local moving_center = get_center_of_mouse_screen()
 local moving_magnitude = big_magnitude
 
-
-
-local movementFn = function(modifier, direction)
-    print(direction)
-    print("let the record show that " .. direction .. " was pressed")
-    hs.eventtap.keyStroke(modifier, direction, 0)
-end
-
-downfn = function() print'let the record show that J was pressed'; hs.eventtap.keyStroke({}, 'down', 0) end
-upfn = function() print'let the record show that K was pressed'; hs.eventtap.keyStroke({}, 'up', 0) end
-leftfn = function() print'let the record show that H was pressed'; hs.eventtap.keyStroke({}, 'left', 0) end
-rightfn = function() print'let the record show that L was pressed'; hs.eventtap.keyStroke({}, 'right', 0) end
-
-enterfn = function() print'let the record show that O was pressed'; hs.eventtap.keyStroke({}, 'return', 0) end
-
-vim_mode = hs.hotkey.modal.new({"ctrl", "alt", "cmd"}, ';')
-function vim_mode:entered() hs.alert.show('Entered vim mode', {}, 0.5) end
-function vim_mode:exited()  hs.alert.show('Exited vim mode', {}, 0.5)  end
-
---local all_keys = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', '\'', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/'}
---local all_keys = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'P', '[', ']', '\\', 'A', 'S', 'D', 'F', 'G', '\'', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/'}
-
---hs.fnutils.each(all_keys, function(key) vim_mode:bind({}, key, function() hs.alert.show('vim mode', {}, 0.3) end) end)
---hs.fnutils.each(all_keys, function(key) vim_mode:bind({'shift'}, key, function() hs.alert.show('vim mode', {}, 0.3) end) end)
-
-vim_mode:bind({}, ';', function() vim_mode:exit() end)
-vim_mode:bind({}, 'i', function() vim_mode:exit() end)
-vim_mode:bind({}, 'o', enterfn)
---vim_mode:bind({}, 'q', function() end)
--- todo this makes 'o' recursive
--- vim_mode:bind({}, 'return', function() vim_mode:exit() enterfn() end)
-
-local bindModalAndKeyToDirection = function(modal, key, direction)
-    vim_mode:bind(modal, key, {}, function() print'binding inside' movementFn(modal, direction) end, {}, function() print'binding inside' movementFn(modal, direction) end)
-end
-
-local combineModalAndKeys = function(modal)
-    hs.fnutils.each(
-            {
-                { key='l', direction='right' },
-                { key='h', direction='left' },
-                { key='j', direction='down' },
-                { key='k', direction='up' }
-            }, function(hotkey)
-                print'binding'
-                bindModalAndKeyToDirection(modal, hotkey.key, hotkey.direction)
-            end
-    )
-end
-
---local all_modal_combinations = {{}, {'shift'}, {'option'}, {'ctrl'}, {'cmd'}, {'shift', 'option'}, {'shift', 'ctrl'}, {'shift', 'cmd'}, {'option', 'ctrl'}, {'option', 'cmd'}, {'ctrl', 'cmd'}, {'shift', 'option', 'ctrl'}, {'shift', 'option', 'cmd'}, {'shift', 'ctrl', 'cmd'}, {'option', 'ctrl', 'cmd'}, {'shift', 'option', 'ctrl', 'cmd'}}
-
--- hs.fnutils.each(all_modal_combinations, function(modal) combineModalAndKeys(modal) end)
-
---hs.fnutils.each({ {}, {'shift'}, {'option'}, {'shift', 'option'}, {'cmd'}, {'cmd', 'shift'} }, function(modal) combineModalAndKeys(modal) end)
-
---local all_modal_keys = {'shift', 'ctrl', 'option', 'cmd'} 
-
 hs.hotkey.bind({"ctrl", "alt", "shift"}, 'right', function()
     local screen = hs.mouse.getCurrentScreen()
     local nextScreen = screen:next()
@@ -146,8 +88,6 @@ local mouse_center = function()
     local margined_frame = {x = frame.x + 25, y = frame.y + 40, w = frame.w - 50, h = frame.h - 80}
     jumpGuidesHighlight(margined_frame.w * moving_magnitude, margined_frame.h * moving_magnitude)
 end
-hs.hotkey.bind({"ctrl", "alt", "shift", 'command'}, 'c', mouse_center)
-hs.hotkey.bind({"ctrl", "alt", "shift", 'command'}, 'k', mouse_center)
 
 local moveMouseToScreenPart = function(arg)
     local screen = hs.mouse.getCurrentScreen()
@@ -179,11 +119,6 @@ local move_mouse_relative_to_current_position = function(direction, magnitude)
     move_mouse_relative_to_point(current_pos, direction, magnitude)
 end
 
-local move_mouse_relative_to_center = function(direction, magnitude)
-    local center = get_center_of_mouse_screen()
-    --local current_pos = hs.mouse.absolutePosition()
-    move_mouse_relative_to_point(center, direction, magnitude)
-end
 
 
 local direction_left = {horizontal = -1, vertical = 0}
@@ -199,57 +134,63 @@ local direction_down_right = {horizontal = 1, vertical = 1}
 
 local direction_zero = {horizontal = 0, vertical = 0}
 
-local moveMouseInScreenUpperLeft = function()
-    move_mouse_relative_to_center(direction_up_left, moving_magnitude)
-end
+--local move_mouse_relative_to_center = function(direction, magnitude)
+--    local center = get_center_of_mouse_screen()
+--    --local current_pos = hs.mouse.absolutePosition()
+--    move_mouse_relative_to_point(center, direction, magnitude)
+--end
+
+--local moveMouseInScreenUpperLeft = function()
+--    move_mouse_relative_to_center(direction_up_left, moving_magnitude)
+--end
 -- hs.hotkey.bind({"ctrl", "alt", "shift", 'command'}, 'w', moveMouseInScreenUpperLeft)
 hs.hotkey.bind({"ctrl", "alt", "shift", 'command'}, 'u', function() move_mouse_relative_to_point(moving_center, direction_up_left, moving_magnitude) end)
 
-local moveMouseInScreenUpperCenter = function()
-    move_mouse_relative_to_center(direction_up, moving_magnitude)
-end
+--local moveMouseInScreenUpperCenter = function()
+--    move_mouse_relative_to_center(direction_up, moving_magnitude)
+--end
 hs.hotkey.bind({"ctrl", "alt", "shift", 'command'}, 'i', function() move_mouse_relative_to_point(moving_center, direction_up, moving_magnitude) end)
 
-local moveMouseInScreenUpperRight = function()
-    move_mouse_relative_to_center(direction_up_right, moving_magnitude)
-end
+--local moveMouseInScreenUpperRight = function()
+--    move_mouse_relative_to_center(direction_up_right, moving_magnitude)
+--end
 -- hs.hotkey.bind({"ctrl", "alt", "shift", 'command'}, 'r', moveMouseInScreenUpperRight)
 hs.hotkey.bind({"ctrl", "alt", "shift", 'command'}, 'o', function() move_mouse_relative_to_point(moving_center, direction_up_right, moving_magnitude) end)
 
-local moveMouseInScreenCenterLeft = function()
-    move_mouse_relative_to_center(direction_left, moving_magnitude)
-end
+--local moveMouseInScreenCenterLeft = function()
+--    move_mouse_relative_to_center(direction_left, moving_magnitude)
+--end
 hs.hotkey.bind({"ctrl", "alt", "shift", 'command'}, 'j', function() move_mouse_relative_to_point(moving_center, direction_left, moving_magnitude) end)
 
-local moveMouseInScreenCenterCenter = function()
-    move_mouse_relative_to_center(direction_zero, moving_magnitude)
-end
+--local moveMouseInScreenCenterCenter = function()
+--    move_mouse_relative_to_center(direction_zero, moving_magnitude)
+--end
 --hs.hotkey.bind({"ctrl", "alt", "shift", 'command'}, 'k', function() move_mouse_relative_to_center(direction_zero, moving_magnitude) end)
 hs.hotkey.bind({"ctrl", "alt", "shift", 'command'}, 'k', function() mouse_center() end)
 
-local moveMouseInScreenCenterRight = function()
-    move_mouse_relative_to_center(direction_right, moving_magnitude)
-end
+--local moveMouseInScreenCenterRight = function()
+--    move_mouse_relative_to_center(direction_right, moving_magnitude)
+--end
 hs.hotkey.bind({"ctrl", "alt", "shift", 'command'}, 'l', function() move_mouse_relative_to_point(moving_center, direction_right, moving_magnitude) end)
 
 
 
-local moveMouseInScreenLowerLeft = function()
-    move_mouse_relative_to_center(direction_down_left, moving_magnitude)
-end
+--local moveMouseInScreenLowerLeft = function()
+--    move_mouse_relative_to_center(direction_down_left, moving_magnitude)
+--end
 -- hs.hotkey.bind({"ctrl", "alt", "shift", 'command'}, 'x', moveMouseInScreenLowerLeft)
 hs.hotkey.bind({"ctrl", "alt", "shift", 'command'}, 'm', function() move_mouse_relative_to_point(moving_center, direction_down_left, moving_magnitude) end)
 
-local moveMouseInScreenLowerCenter = function()
-    move_mouse_relative_to_center(direction_down, moving_magnitude)
-end
+--local moveMouseInScreenLowerCenter = function()
+--    move_mouse_relative_to_center(direction_down, moving_magnitude)
+--end
 -- doesn't work - used by macos
 -- hs.hotkey.bind({"ctrl", "alt", "shift", 'command'}, ',', moveMouseInScreenLowerCenter)
 hs.hotkey.bind({"ctrl", "alt", "shift", 'command'}, '[', function() move_mouse_relative_to_point(moving_center, direction_down, moving_magnitude) end)
 
-local moveMouseInScreenLowerRight = function()
-    move_mouse_relative_to_center(direction_down_right, moving_magnitude)
-end
+--local moveMouseInScreenLowerRight = function()
+--    move_mouse_relative_to_center(direction_down_right, moving_magnitude)
+--end
 hs.hotkey.bind({"ctrl", "alt", "shift", 'command'}, 'v', function() move_mouse_relative_to_point(moving_center, direction_down_right, moving_magnitude) end)
 -- doesn't work - used by macos
 -- hs.hotkey.bind({"ctrl", "alt", "shift", 'command'}, '.', moveMouseInScreenLowerRight)
@@ -377,11 +318,3 @@ function clearGuidesHighlight()
 end
 
 
-
---HYPER TEST
-
--- hyper_mode = hs.hotkey.modal.new({}, 'F18')
--- function hyper_mode:entered() hs.alert.show('Entered hyper_mode', {}, 0.5) end
--- function hyper_mode:exited()  hs.alert.show('Exited hyper_mode', {}, 0.5)  end
--- hyper_mode:bind({}, 'F18', function() hyper_mode:exit() end)
--- hyper_mode:bind({"ctrl", "alt", "shift", 'command'}, 'h', function() hs.alert.show('Hyper hello world!', {}, 0.5) end)
