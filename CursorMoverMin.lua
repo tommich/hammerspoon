@@ -142,9 +142,10 @@ end
 
 function drawSmallRedCircleRelativeToPoint(point, direction, distance)
     circle = hs.drawing.circle(hs.geometry.rect(point.x - 3 + distance.horizontal * direction.horizontal, point.y - 3 + distance.vertical * direction.vertical, 6, 6))
-    circle:setStrokeColor({["red"]=1,["blue"]=0,["green"]=0,["alpha"]=1})
+    local redColor = { ["red"]=1, ["blue"]=0, ["green"]=0, ["alpha"]=1}
+    circle:setStrokeColor(redColor)
     circle:setFill(true)
-    circle:setFillColor({["red"]=1,["blue"]=0,["green"]=0,["alpha"]=1})
+    circle:setFillColor(redColor)
     circle:show()
     return circle
 end
