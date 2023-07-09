@@ -1,0 +1,10 @@
+# Exclude files for git
+.idea/*
+*.iml
+.DS_Store
+bin/*
+*/target/*
+/target/*
+kubernetes.yaml
+/**/pom.xml.versionsBackup
+Spoons/*
