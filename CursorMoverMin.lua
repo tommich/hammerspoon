@@ -79,11 +79,6 @@ local direction_down_right = {horizontal = 1, vertical = 1}
 local direction_zero = {horizontal = 0, vertical = 0}
 
 
-local screen = hs.mouse.getCurrentScreen()
-local rect = screen:fullFrame()
-local center = hs.geometry.rectMidPoint(rect)
-
-
 -- Find my mouse pointer
 local mouseCircle = nil
 local mouseCircleTimer = nil
