@@ -128,19 +128,19 @@ function jumpGuidesHighlight(horizontalDistance, verticalDistance)
 
     distance = {horizontal = horizontalDistance, vertical = verticalDistance}
 
-    guides.left = drawSmallBlueCircleRelativeToPoint(mousepoint, direction_left, distance)
-    guides.right = drawSmallBlueCircleRelativeToPoint(mousepoint, direction_right, distance)
-    guides.up_left = drawSmallBlueCircleRelativeToPoint(mousepoint, direction_up_left, distance)
-    guides.up_right = drawSmallBlueCircleRelativeToPoint(mousepoint, direction_up_right, distance)
-    guides.up = drawSmallBlueCircleRelativeToPoint(mousepoint, direction_up, distance)
-    guides.down = drawSmallBlueCircleRelativeToPoint(mousepoint, direction_down, distance)
-    guides.down_left = drawSmallBlueCircleRelativeToPoint(mousepoint, direction_down_left, distance)
-    guides.down_right = drawSmallBlueCircleRelativeToPoint(mousepoint, direction_down_right, distance)
+    guides.left = drawSmallRedCircleRelativeToPoint(mousepoint, direction_left, distance)
+    guides.right = drawSmallRedCircleRelativeToPoint(mousepoint, direction_right, distance)
+    guides.up_left = drawSmallRedCircleRelativeToPoint(mousepoint, direction_up_left, distance)
+    guides.up_right = drawSmallRedCircleRelativeToPoint(mousepoint, direction_up_right, distance)
+    guides.up = drawSmallRedCircleRelativeToPoint(mousepoint, direction_up, distance)
+    guides.down = drawSmallRedCircleRelativeToPoint(mousepoint, direction_down, distance)
+    guides.down_left = drawSmallRedCircleRelativeToPoint(mousepoint, direction_down_left, distance)
+    guides.down_right = drawSmallRedCircleRelativeToPoint(mousepoint, direction_down_right, distance)
 
     guidesTimer = hs.timer.doAfter(1.0, clearGuidesHighlight)
 end
 
-function drawSmallBlueCircleRelativeToPoint(point, direction, distance)
+function drawSmallRedCircleRelativeToPoint(point, direction, distance)
     circle = hs.drawing.circle(hs.geometry.rect(point.x - 3 + distance.horizontal * direction.horizontal, point.y - 3 + distance.vertical * direction.vertical, 6, 6))
     circle:setStrokeColor({["red"]=1,["blue"]=0,["green"]=0,["alpha"]=1})
     circle:setFill(true)
